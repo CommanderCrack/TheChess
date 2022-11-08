@@ -48,7 +48,7 @@ class Button():
         
         screen.blit(self.image,(self.rect.x, self.rect.y))
 
-start_button = Button(200, 200, start_img, 0.5)    
+start_button = Button(205, 200, start_img, 0.5)    
 setting_button = Button(10,10, setting_img, 0.1)
 guide_button = Button(215,325, guide_img, 0.1)
 
