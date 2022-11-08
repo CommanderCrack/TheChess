@@ -14,14 +14,13 @@ def draw_text(text, font, text_col, x, y):
 
 #load buttons
 
-start_img = pygame.image.load('Chess/Sprites/Start-button.png').convert_alpha()
-setting_img = pygame.image.load('Chess/Sprites/Settings Cog.png').convert_alpha()
-guide_img = pygame.image.load('Chess/Sprites/Guide.png').convert_alpha()
+start_img = pygame.image.load('Sprites/Start-button.png').convert_alpha()
+setting_img = pygame.image.load('Sprites/Settings Cog.png').convert_alpha()
+guide_img = pygame.image.load('Sprites/Guide.png').convert_alpha()
 
 #backgrounds
-main_cb = pygame.image.load('Chess/Sprites/Chess_Board.png').convert()
-main_cb = pygame.scale.transform(main_cb, (600,600))
-
+main_cb = pygame.image.load('Sprites/Chess_Board.png').convert()
+main_cb = pygame.transform.scale(main_cb, (600,600))
 #button class
 class Button():
     def __init__(self, x , y , image , scale):
@@ -31,9 +30,11 @@ class Button():
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
         self.clicked = False
-
-
+        
+    
     def draw(self):
+        #draws button
+        screen.blit(self.image,(self.rect.x, self.rect.y))
         #get mouse position
         pos = pygame.mouse.get_pos()
         #check mouse over and clicked on button
@@ -44,9 +45,9 @@ class Button():
         
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
-        #draws button
+
+            
         
-        screen.blit(self.image,(self.rect.x, self.rect.y))
 
 start_button = Button(205, 200, start_img, 0.5)    
 setting_button = Button(10,10, setting_img, 0.1)
@@ -55,8 +56,7 @@ guide_button = Button(215,325, guide_img, 0.1)
 #game_states
 paused = False
 #game Loop
-Run = True
-while Run:
+while True:
     screen.fill((55, 72, 33))
     screen.blit(main_cb,(0,0))
     start_button.draw()
@@ -66,6 +66,7 @@ while Run:
     #event handler
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            Run = False
+            pygame.quit()
+            exit()
 
     pygame.display.update()
