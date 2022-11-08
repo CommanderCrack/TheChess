@@ -20,7 +20,7 @@ guide_img = pygame.image.load('Chess/Sprites/Guide.png').convert_alpha()
 
 #backgrounds
 main_cb = pygame.image.load('Chess/Sprites/Chess_Board.png').convert()
-main_cb = pygame.scale.transform(main_cb, (600,800))
+main_cb = pygame.scale.transform(main_cb, (600,600))
 
 #button class
 class Button():
