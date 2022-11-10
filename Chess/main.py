@@ -5,12 +5,21 @@ pygame.init()
 #creating a display
 screen_width = 600
 screen_height = 600
+# font and text
+
+MenuFont = pygame.font.Font('freesansbold.ttf',32)
+MenuTextX = 200
+MenuTextY = 100
+textCol = (0,0,0)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Alternative Chess Game")
 
+#draw text onto screen 
+
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
+    screen.blit(img, (x,y))
 
 #load buttons
 
@@ -19,8 +28,8 @@ setting_img = pygame.image.load('Chess/Sprites/Settings Cog.png').convert_alpha(
 guide_img = pygame.image.load('Chess/Sprites/Guide.png').convert_alpha()
 
 #backgrounds
-main_cb = pygame.image.load('Chess/Sprites/Chess_Board.png').convert()
-main_cb = pygame.scale.transform(main_cb, (600,600))
+main_cb = pygame.image.load('Chess/Sprites/MenuChessBoard.png').convert()
+main_cb = pygame.transform.scale(main_cb, (600,600))
 
 #button class
 class Button():
@@ -48,9 +57,9 @@ class Button():
         
         screen.blit(self.image,(self.rect.x, self.rect.y))
 
-start_button = Button(205, 200, start_img, 0.5)    
+start_button = Button(218, 200, start_img, 0.5)    
 setting_button = Button(10,10, setting_img, 0.1)
-guide_button = Button(215,325, guide_img, 0.1)
+guide_button = Button(224,325, guide_img, 0.1)
 
 #game_states
 paused = False
@@ -62,7 +71,7 @@ while Run:
     start_button.draw()
     setting_button.draw()
     guide_button.draw()
-    
+    draw_text("Chess Game", MenuFont, textCol, MenuTextX, MenuTextY)
     #event handler
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
