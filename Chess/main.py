@@ -6,6 +6,9 @@ pygame.init()
 screen_width = 600
 screen_height = 600
 
+def LoadImages():
+    pass
+
 # font and text
 MenuFont = pygame.font.Font('freesansbold.ttf',32)
 MenuTextX = 200
