@@ -8,6 +8,6 @@ class GameState():
             ["--","--","--","--","--","--","--","--"],
             ["--","--","--","--","--","--","--","--"],
             ["wp","wp","wp","wp","wp","wp","wp","wp"],
-            ["wR","wN","wB","wQ","wK","wB","wN","wS"]]
+            ["wR","wN","wC","wQ","wK","wB","wN","wS"]]
         self.whiteToMove = True
         self.moveLog = []
