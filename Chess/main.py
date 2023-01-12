@@ -1,14 +1,17 @@
 #libraries I will need:
 import pygame
+import pygame as p
 pygame.init()
 
 #creating a display
 screen_width = 600
 screen_height = 600
 
+IMAGES = {}
 def LoadImages():
-    pass
-
+    pieces = ['wp','wR','wN','wB','wK','wQ','bp','wR','wN','wB','wK','wQ']
+    for piece in pieces:
+     IMAGES[piece] = p.image.load("Chess/Chess_Pieces/"+ piece + ".png")
 # font and text
 MenuFont = pygame.font.Font('freesansbold.ttf',32)
 MenuTextX = 200

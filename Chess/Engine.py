@@ -1,4 +1,5 @@
 class GameState():
+    # 
     def __init__(self):
         self.board = [
             ["bR","bN","bC","bQ","bK","bB","bN","bS"],
