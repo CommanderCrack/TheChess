@@ -1,13 +1,20 @@
 #libraries I will need:
 import pygame
 pygame.init()
-
+#import engine error.
+import Engine
 #creating a display
-screen_width = 600
-screen_height = 600
-
+screen_width = 512
+screen_height = 512
+Dimension = 8
+square_size = screen_height // Dimension
+fps = 15 
+Images = {}
+#loading images with the exception of the cannon and spider.
 def LoadImages():
-    pass
+    pieces = ['wp','wN','wB','wK','wQ','wR','bp','bN','bB','bK','bQ','bR']
+    for piece in pieces:
+        Images[pieces] = pygame.transform.scale(pygame.image.load("TheChess/Chess/Sprites/Chess_pieces/" + piece + ".png"), (square_size, square_size))
 
 # font and text
 MenuFont = pygame.font.Font('freesansbold.ttf',32)
@@ -24,12 +31,12 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x,y))
 
 #load buttons
-start_img = pygame.image.load('Chess/Sprites/Start-button.png').convert_alpha()
-setting_img = pygame.image.load('Chess/Sprites/Settings Cog.png').convert_alpha()
-guide_img = pygame.image.load('Chess/Sprites/Guide.png').convert_alpha()
+start_img = pygame.image.load('TheChess/Chess/Sprites/Start-button.png').convert_alpha()
+setting_img = pygame.image.load('TheChess/Chess/Sprites/Settings Cog.png').convert_alpha()
+guide_img = pygame.image.load('TheChess/Chess/Sprites/Guide.png').convert_alpha()
 
 #backgrounds
-main_cb = pygame.image.load('Chess/Sprites/MenuChessBoard.png').convert()
+main_cb = pygame.image.load('TheChess/Chess/Sprites/MenuChessBoard.png').convert()
 main_cb = pygame.transform.scale(main_cb, (600,600))
 
 #button class
@@ -66,7 +73,21 @@ guide_button = Button(224,325, guide_img, 0.1)
 #game_states
 paused = False
 
-#Game Loop
+def main ():
+    pygame.init()
+    screen = pygame.display.set_mode((screen_height,screen_width ))
+    clock = pygame.time.Clock()
+    screen.fill(pygame.Color("white"))
+    gs = Engine.GameState()
+    LoadImages()
+    running = True
+    while running:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                running = False
+        clock.tick(fps)
+        pygame.display.flip()
+
 Run = True
 while Run:
     screen.fill((55, 72, 33))
