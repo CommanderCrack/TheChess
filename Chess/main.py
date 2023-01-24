@@ -14,8 +14,8 @@ Images = {}
 def LoadImages():
     pieces = ['wp','wN','wB','wK','wQ','wR','bp','bN','bB','bK','bQ','bR']
     for piece in pieces:
-        Images[pieces] = pygame.transform.scale(pygame.image.load("TheChess/Chess/Sprites/Chess_pieces/" + piece + ".png"), (square_size, square_size))
-
+        #Images[piece] = pygame.transform.scale(pygame.image.load("Chess_pieces/" + piece + ".png"), (square_size, square_size))
+        Images[piece] = pygame.image.load("TheChess/Chess/Sprites/Chess_Pieces/"+ piece+".png")
 # font and text
 MenuFont = pygame.font.Font('freesansbold.ttf',32)
 MenuTextX = 200
@@ -29,6 +29,23 @@ pygame.display.set_caption("Alternative Chess Game")
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x,y))
+
+def main ():
+    pygame.init()
+    screen = pygame.display.set_mode((screen_height,screen_width ))
+    clock = pygame.time.Clock()
+    screen.fill(pygame.Color("white"))
+    gs = Engine.GameState()
+    LoadImages()
+    running = True
+    drawGameState(screen, gs)
+    while running:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                #running = False
+                clock.tick(fps)
+                pygame.display.flip()
+            
 
 #load buttons
 start_img = pygame.image.load('TheChess/Chess/Sprites/Start-button.png').convert_alpha()
@@ -58,11 +75,12 @@ class Button():
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
                 print("clicked")
+                if __name__ == "__main__":
+                    main()
         
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.clicked = False
         #draws button
-        
         screen.blit(self.image,(self.rect.x, self.rect.y))
 
 # Creating buttons for the menu screen. 
@@ -73,20 +91,35 @@ guide_button = Button(224,325, guide_img, 0.1)
 #game_states
 paused = False
 
-def main ():
-    pygame.init()
-    screen = pygame.display.set_mode((screen_height,screen_width ))
-    clock = pygame.time.Clock()
-    screen.fill(pygame.Color("white"))
-    gs = Engine.GameState()
-    LoadImages()
-    running = True
-    while running:
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
-                running = False
-        clock.tick(fps)
-        pygame.display.flip()
+
+
+
+
+
+#draw the squares onto the board.
+
+def drawGameState(screen, gs):
+    drawBoard(screen) #draw squares onto the screen
+    # potential piece highlighting, move suggestion.
+    drawPieces(screen, gs.board) # draw pieces ontop of the squares.
+
+def drawBoard(screen):
+    colours = [pygame.Color("white"), pygame.Color("gray")]
+    #nested for loop
+    for r in range(Dimension):
+        for c in range(Dimension):
+            #colour picker.
+            colour = colours[((r+c)%2)]
+            pygame.draw.rect(screen, colour, pygame.Rect(c*square_size, r*square_size, square_size, square_size))
+
+#draws the pieces according to the game state from engine.
+def drawPieces(screen, board):
+    for r in range(Dimension):
+        for c in range(Dimension):
+            piece = board[r][c]
+            #check for empty squares.
+            if piece != "--":
+                screen.blit(Images[piece], pygame.Rect(c*square_size, r*square_size, square_size, square_size))
 
 Run = True
 while Run:
@@ -102,3 +135,6 @@ while Run:
             Run = False
 
     pygame.display.update()
+
+
+#allows to import
