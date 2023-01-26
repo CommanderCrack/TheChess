@@ -42,9 +42,11 @@ def main ():
     while running:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
-                #running = False
-                clock.tick(fps)
-                pygame.display.flip()
+                running = False
+                pygame.quit()
+                exit()
+            clock.tick(fps)
+            pygame.display.flip()
             
 
 #load buttons
@@ -75,9 +77,10 @@ class Button():
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
                 print("clicked")
+                Run = False
                 if __name__ == "__main__":
                     main()
-        
+                
             if pygame.mouse.get_pressed()[0] == 0:
                 self.clicked = False
         #draws button
@@ -85,8 +88,8 @@ class Button():
 
 # Creating buttons for the menu screen. 
 start_button = Button(218, 200, start_img, 0.5)    
-setting_button = Button(10,10, setting_img, 0.1)
-guide_button = Button(224,325, guide_img, 0.1)
+setting_button = Button(10, 10, setting_img, 0.1)
+guide_button = Button(224, 325, guide_img, 0.1)
 
 #game_states
 paused = False
@@ -133,6 +136,8 @@ while Run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             Run = False
+            pygame.quit()
+            exit()
 
     pygame.display.update()
 
