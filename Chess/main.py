@@ -59,8 +59,12 @@ def main ():
                     square_select = (row, col)
                     player_clicks.append(square_select) # append for both.
                 if len(player_clicks) == 2:
+                    move = Engine.Move(player_clicks[0],player_clicks[1], gs.board)
+                    print(move.ChessNotation())
+                    gs.makeMove(move)
+                    square_select = () # resets user clicks
+                    player_clicks = []
 
-                    
             drawGameState(screen, gs)
             clock.tick(fps)
             pygame.display.flip()
