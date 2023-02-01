@@ -15,7 +15,7 @@ def LoadImages():
     pieces = ['wp','wN','wB','wK','wQ','wR','bp','bN','bB','bK','bQ','bR']
     for piece in pieces:
         #Images[piece] = pygame.transform.scale(pygame.image.load("Chess_pieces/" + piece + ".png"), (square_size, square_size))
-        Images[piece] = pygame.image.load("TheChess/Chess/Sprites/Chess_Pieces/"+ piece+".png")
+        Images[piece] = pygame.image.load("Chess/Sprites/Chess_Pieces/"+ piece+".png")
 # font and text
 MenuFont = pygame.font.Font('freesansbold.ttf',32)
 MenuTextX = 200
@@ -39,23 +39,40 @@ def main ():
     LoadImages()
     running = True
     drawGameState(screen, gs)
+    square_select = () #no square selected initially. (row,col)
+    player_clicks = [] # keep track of the clicks
     while running:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 running = False
                 pygame.quit()
                 exit()
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                location = pygame.mouse.get_pos() # loc. of mouse x,y
+                # find out where we clicked on
+                col = location[0]//square_size
+                row = location[1]//square_size
+                if square_select == (row, col): # checks if the same square is being clicked.
+                    square_select = ()
+                    player_clicks = []
+                else:
+                    square_select = (row, col)
+                    player_clicks.append(square_select) # append for both.
+                if len(player_clicks) == 2:
+
+                    
+            drawGameState(screen, gs)
             clock.tick(fps)
             pygame.display.flip()
             
 
 #load buttons
-start_img = pygame.image.load('TheChess/Chess/Sprites/Start-button.png').convert_alpha()
-setting_img = pygame.image.load('TheChess/Chess/Sprites/Settings Cog.png').convert_alpha()
-guide_img = pygame.image.load('TheChess/Chess/Sprites/Guide.png').convert_alpha()
+start_img = pygame.image.load('Chess/Sprites/Start-button.png').convert_alpha()
+setting_img = pygame.image.load('Chess/Sprites/Settings Cog.png').convert_alpha()
+guide_img = pygame.image.load('Chess/Sprites/Guide.png').convert_alpha()
 
 #backgrounds
-main_cb = pygame.image.load('TheChess/Chess/Sprites/MenuChessBoard.png').convert()
+main_cb = pygame.image.load('Chess/Sprites/MenuChessBoard.png').convert()
 main_cb = pygame.transform.scale(main_cb, (600,600))
 
 #button class
@@ -87,9 +104,9 @@ class Button():
         screen.blit(self.image,(self.rect.x, self.rect.y))
 
 # Creating buttons for the menu screen. 
-start_button = Button(218, 200, start_img, 0.5)    
+start_button = Button(170, 200, start_img, 0.5)    
 setting_button = Button(10, 10, setting_img, 0.1)
-guide_button = Button(224, 325, guide_img, 0.1)
+guide_button = Button(180, 325, guide_img, 0.1)
 
 #game_states
 paused = False
