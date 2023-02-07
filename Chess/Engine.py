@@ -12,10 +12,25 @@ class GameState():
         self.whiteToMove = True
         self.moveLog = []
     def makeMove(self, move):
-        self.board[move.startrow][move.startcol] = "--"
-        self.board[move.endrow][move.endcol] = move.piecemove
-        self.moveLog.append(move) # records the moves for undo if wanted.
-        self.whiteToMove = not self.whiteToMove # swap players
+        #won't work on pawn promotion, en passant and castling
+        # annotate this on word:
+        if self.board[move.startrow][move.startcol] != "--":
+        #
+            self.board[move.startrow][move.startcol] = "--"
+            self.board[move.endrow][move.endcol] = move.piecemove
+            self.moveLog.append(move) # records the moves for undo if wanted.
+            self.whiteToMove = not self.whiteToMove # swap players
+    
+    # undo the last move
+    def undolastmove(self):
+        if len(self.moveLog) != 0:
+            move = self.moveLog.pop()
+            #moves moved piece back to the old square from pop function
+            self.board[move.startrow][move.startcol] = move.piecemove
+            #moves the captured piece back (if any)
+            self.board[move.endrow][move.endcol] = move.piececaptured
+            self.whiteToMove = not self.whiteToMove # once reversed must switch turns.
+
 class Move():
     #making chess notation using dictionaries.
 

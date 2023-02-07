@@ -64,10 +64,13 @@ def main ():
                     gs.makeMove(move)
                     square_select = () # resets user clicks
                     player_clicks = []
-
-            drawGameState(screen, gs)
-            clock.tick(fps)
-            pygame.display.flip()
+            # listen to keys
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_q: #undo when q pressed
+                    gs.undolastmove()
+        drawGameState(screen, gs)
+        clock.tick(fps)
+        pygame.display.flip()
             
 
 #load buttons
