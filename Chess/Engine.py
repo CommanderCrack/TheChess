@@ -13,7 +13,6 @@ class GameState():
         self.moveLog = []
     def makeMove(self, move):
         #won't work on pawn promotion, en passant and castling
-        # annotate this on word:
         if self.board[move.startrow][move.startcol] != "--":
         #
             self.board[move.startrow][move.startcol] = "--"
@@ -30,6 +29,39 @@ class GameState():
             #moves the captured piece back (if any)
             self.board[move.endrow][move.endcol] = move.piececaptured
             self.whiteToMove = not self.whiteToMove # once reversed must switch turns.
+
+
+    # all moves including checks
+
+    def getValidMoves(self):
+        return self.getAllPossible()
+
+    # all moves without check
+
+    def getAllPossible(self):
+        moves = [Move((6,7), (4,5), self.board)]
+        for r in range(len(self.board)):
+            for c in range(len(self.board[r])):
+                colourturn = self.board[r][c][0]
+                if (colourturn == "w" and self.whiteToMove) and (colourturn == "b" and not self.whiteToMove):
+                    piece = self.board[r][c][1]
+                    if piece == "p":
+                        self.getPawnMoves(r, c, moves)
+                    elif piece == "R":
+                        self.getRookMoves(r, c, moves)
+                    #elif piece == "C":
+                    #   self.getCannonMoves(r,c,moves)
+                    # elif piece == "S":
+                    #   self.getSpiderMoves(r,c,moves) 
+        return moves
+
+    def getPawnMoves(self, r, c, moves):
+        pass
+
+    def getRookMoves(self, r, c, moves):
+        pass
+
+
 
 class Move():
     #making chess notation using dictionaries.

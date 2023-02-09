@@ -36,6 +36,8 @@ def main ():
     clock = pygame.time.Clock()
     screen.fill(pygame.Color("white"))
     gs = Engine.GameState()
+    validMoves = gs.getValidMoves()
+    moveMade = False # stop regeneration of the valid moves every time.
     LoadImages()
     running = True
     drawGameState(screen, gs)
@@ -61,13 +63,21 @@ def main ():
                 if len(player_clicks) == 2:
                     move = Engine.Move(player_clicks[0],player_clicks[1], gs.board)
                     print(move.ChessNotation())
-                    gs.makeMove(move)
-                    square_select = () # resets user clicks
-                    player_clicks = []
+                    if move in validMoves:
+                        gs.makeMove(move)
+                        square_select = () # resets user clicks
+                        player_clicks = []
+                        moveMade = True
             # listen to keys
             elif e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_q: #undo when q pressed
                     gs.undolastmove()
+                    moveMade = True
+
+        if moveMade: 
+            validMoves = gs.getValidMoves()
+            moveMade = False
+
         drawGameState(screen, gs)
         clock.tick(fps)
         pygame.display.flip()
@@ -131,7 +141,7 @@ def drawGameState(screen, gs):
     drawPieces(screen, gs.board) # draw pieces ontop of the squares.
 
 def drawBoard(screen):
-    colours = [pygame.Color("white"), pygame.Color("gray")]
+    colours = [pygame.Color("white"), pygame.Color("lightpink")]
     #nested for loop
     for r in range(Dimension):
         for c in range(Dimension):
