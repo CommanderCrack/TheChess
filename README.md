@@ -1,1 +1,1 @@
-print("Chess program with a twist")
+My computing project.
