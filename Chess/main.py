@@ -1,9 +1,9 @@
 #libraries I will need:
 import pygame
 pygame.init()
-#import engine error.
+#import engine error:
 import Engine
-#creating a display
+#creating a display:
 screen_width = 512
 screen_height = 512
 Dimension = 8
@@ -126,12 +126,8 @@ setting_button = Button(10, 10, setting_img, 0.1)
 guide_button = Button(180, 325, guide_img, 0.1)
 
 #game_states
+
 paused = False
-
-
-
-
-
 
 #draw the squares onto the board.
 

@@ -88,8 +88,6 @@ class Move():
             return self.moveID == other.moveID
         return False
 
-
-
     def ChessNotation(self):
         return self.getRankFile(self.startrow, self.startcol) + self.getRankFile(self.endrow, self.endcol)
 
