@@ -39,7 +39,7 @@ class GameState():
     # all moves without check
 
     def getAllPossible(self):
-        moves = [Move((6,7), (4,5), self.board)]
+        moves = [Move((6,4), (4,4), self.board)]
         for r in range(len(self.board)):
             for c in range(len(self.board[r])):
                 colourturn = self.board[r][c][0]
@@ -51,8 +51,10 @@ class GameState():
                         self.getRookMoves(r, c, moves)
                     #elif piece == "C":
                     #   self.getCannonMoves(r,c,moves)
-                    # elif piece == "S":
+                    #elif piece == "S":
                     #   self.getSpiderMoves(r,c,moves) 
+                    #elif piece == "Q":
+                    #   self.getQueenMoves(r,c,moves)
         return moves
 
     def getPawnMoves(self, r, c, moves):
@@ -78,6 +80,15 @@ class Move():
         self.endcol = end_sg[1]
         self.piecemove = board[self.startrow][self.startcol]
         self.piececaptured = board[self.endrow][self.endcol]
+        self.moveID = self.startrow * 1000 + self.startcol * 100 + self.endrow * 10 + self.endcol
+        print(self.moveID)
+
+    def __eq__(self,other):
+        if isinstance(other, Move):
+            return self.moveID == other.moveID
+        return False
+
+
 
     def ChessNotation(self):
         return self.getRankFile(self.startrow, self.startcol) + self.getRankFile(self.endrow, self.endcol)
