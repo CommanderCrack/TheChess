@@ -11,6 +11,8 @@ class GameState():
             ["wR","wN","wB","wQ","wK","wB","wN","wR"]]
         self.whiteToMove = True
         self.moveLog = []
+        self.moveFunctions = {'p' : self.PawnMoves, 'R' : self.RookMoves, 'N' : self.KnightMoves, 'B' : self.BishopMoves, 'Q' : self.QueenMoves, 'K' : self.KingMoves}
+    
     def makeMove(self, move):
         #won't work on pawn promotion, en passant and castling
         if self.board[move.startrow][move.startcol] != "--":
@@ -45,17 +47,7 @@ class GameState():
                 colourturn = self.board[r][c][0]
                 if (colourturn == "w" and self.whiteToMove) or (colourturn == "b" and not self.whiteToMove):
                     piece = self.board[r][c][1]
-                    if piece == "p":
-                        self.PawnMoves(r, c, moves)   
-                        print(moves)        
-                    elif piece == "R":
-                        self.RookMoves(r, c, moves)
-                    #elif piece == "C":
-                    #   self.CannonMoves(r,c,moves)
-                    #elif piece == "S":
-                    #   self.SpiderMoves(r,c,moves) 
-                    #elif piece == "Q":
-                    #   self.QueenMoves(r,c,moves)
+                    self.moveFunctions[piece](r,c,moves) # calls the move function
         return moves
 
     def PawnMoves(self, r, c, moves):
@@ -64,8 +56,53 @@ class GameState():
                 moves.append(Move((r,c), (r-1,c), self.board))
                 if r == 6 and self.board[r-2][c] == "--": # two pawn up
                     moves.append(Move((r,c),(r-2,c), self.board))
+            if c - 1 >= 0: # left capture
+                if self.board[r-1][c-1][0] == 'b':
+                    moves.append(Move((r,c),(r-1,c-1), self.board))
+            if c+1 <= 7: #right capture
+                if self.board[r-1][c+1][0] == 'b':
+                    moves.append(Move((r,c),(r-1,c+1), self.board))
+        else: # black movement
+            if self.board[r+1][c] == "--": # one pawn down
+                moves.append(Move((r,c),(r+1,c), self.board))
+                if r == 1 and self.board[r+2][c] == "--":
+                    moves.append(Move((r,c),(r+2,c), self.board))
+            if c - 1 >= 0 :
+                if self.board[r+1][c-1][0] == 'w':
+                    moves.append(Move((r,c),(r+1,c-1), self.board))
+            if c + 1 <= 7: 
+                if self.board[r+1][c+1][0] == 'w':
+                    moves.append(Move((r,c),(r+1, c+1), self.board))
 
     def RookMoves(self, r, c, moves):
+        directions = ((-1,0),(0,-1),(1,0),(0,1)) # different locations
+        enemyColour = "b" if self.whiteToMove else "w"
+        for d in directions:
+            for i in range(1,8):
+                endrow = r + d[0] * i
+                endcol = r + d[1] * i 
+                if 0 <= endrow <8 and 0 <= endcol < 8: # make sure it's on board
+                    endpiece = self.board[endrow][endcol]
+                    if endpiece == "--":
+                        moves.append(Move((r,c),(endrow,endcol),self.board))
+                    elif endpiece[0] == enemyColour:
+                        moves.append(Move((r,c),(endrow, endcol), self.board))
+                        break
+                    else:
+                        break
+                else:
+                    break
+           
+    def KnightMoves(self, r, c, moves):
+        pass
+    
+    def QueenMoves(self, r, c, moves):
+        pass
+
+    def KingMoves(self, r, c, moves):
+        pass
+
+    def BishopMoves(self, r, c, moves):
         pass
 
 class Move():
