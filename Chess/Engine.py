@@ -94,8 +94,16 @@ class GameState():
                     break
            
     def KnightMoves(self, r, c, moves):
-        pass
-    
+        knightmoves = ((-2,-1),(-2,1),(2,-1),(2,1),(-1,-2),(-1,2),(1,2),(1,-2))
+        enemyColour = "b" if self.whiteToMove else "w"
+        for m in knightmoves:
+            endrow = r + m[0]
+            endcol = c + m[1]
+            if 0 <= endrow < 8 and 0 <= endcol < 8:
+                endpiece = self.board[endrow][endcol]
+                if endpiece[0] == enemyColour or endpiece == "--":
+                    moves.append(Move((r,c),(endrow,endcol), self.board))
+
     def QueenMoves(self, r, c, moves):
         pass
 
@@ -103,8 +111,23 @@ class GameState():
         pass
 
     def BishopMoves(self, r, c, moves):
-        pass
-
+        direction = ((-1,-1),(-1,1),(1,-1),(1,1))
+        enemyColour = "b" if self.whiteToMove else "w"
+        for d in direction:
+            for i in range(1,8):
+                endrow = r+d[0] * i
+                endcol = c+d[1] * i 
+                if 0 <= endrow < 8 and 0 <= endcol < 8:
+                    endpiece = self.board[endrow][endcol]
+                    if endpiece == "--":
+                        moves.append(Move((r,c),(endrow,endcol),self.board))
+                    elif endpiece[0] == enemyColour:
+                        moves.append(Move((r,c),(endrow, endcol), self.board))
+                        break
+                    else:
+                        break
+                else:
+                    break
 class Move():
     #making chess notation using dictionaries.
 
