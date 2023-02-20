@@ -11,7 +11,7 @@ class GameState():
             ["wR","wN","wB","wQ","wK","wB","wN","wR"]]
         self.whiteToMove = True
         self.moveLog = []
-        self.moveFunctions = {'p' : self.PawnMoves, 'R' : self.RookMoves, 'N' : self.KnightMoves, 'B' : self.BishopMoves, 'Q' : self.QueenMoves, 'K' : self.KingMoves}
+        self.moveFunctions = {'R':self.RookMoves,'p' : self.PawnMoves,'N' : self.KnightMoves, 'B' : self.BishopMoves, 'Q' : self.QueenMoves, 'K' : self.KingMoves}
     
     def makeMove(self, move):
         #won't work on pawn promotion, en passant and castling
@@ -75,12 +75,12 @@ class GameState():
                     moves.append(Move((r,c),(r+1, c+1), self.board))
 
     def RookMoves(self, r, c, moves):
-        directions = ((-1,0),(0,-1),(1,0),(0,1)) # different locations
+        directions = ((-1,0),(0,-1),(1,0),(0,1)) # different locations in tuple
         enemyColour = "b" if self.whiteToMove else "w"
         for d in directions:
             for i in range(1,8):
                 endrow = r + d[0] * i
-                endcol = r + d[1] * i 
+                endcol = c + d[1] * i  #fixed from c to r 
                 if 0 <= endrow <8 and 0 <= endcol < 8: # make sure it's on board
                     endpiece = self.board[endrow][endcol]
                     if endpiece == "--":
