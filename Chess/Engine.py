@@ -105,10 +105,21 @@ class GameState():
                     moves.append(Move((r,c),(endrow,endcol), self.board))
 
     def QueenMoves(self, r, c, moves):
-        pass
+        self.RookMoves(r,c,moves)
+        self.BishopMoves(r,c,moves)
+
 
     def KingMoves(self, r, c, moves):
-        pass
+        directions = ((-1,-1),(-1,1),(1,1),(1,-1),(-1,0),(1,0),(0,-1),(0,1))
+        enemyColour = "b" if self.whiteToMove else "w"
+        for i in range(8):
+            endrow = r + directions[i][0]
+            endcol = c + directions[i][1]
+            if 0<= endrow < 8 and 0 <= endcol <8:
+                endpiece = self.board[endrow][endcol]
+                if endpiece[0] == enemyColour or endpiece == "--":
+                    moves.append(Move((r,c),(endrow,endcol), self.board))
+
 
     def BishopMoves(self, r, c, moves):
         direction = ((-1,-1),(-1,1),(1,-1),(1,1))
