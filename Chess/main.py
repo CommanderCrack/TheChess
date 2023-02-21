@@ -1,5 +1,6 @@
 #libraries I will need:
 import pygame
+from pygame import mixer
 pygame.init()
 #import engine error:
 import Engine
@@ -64,10 +65,13 @@ def main ():
                     move = Engine.Move(player_clicks[0],player_clicks[1], gs.board)
                     print(move.ChessNotation())
                     if move in validMoves:
-                        gs.makeMove(move)
+                        gs.makeMove(move) ### fix here
+                        moveMade = True
                         square_select = () # resets user clicks
                         player_clicks = []
-                        moveMade = True
+                    else:
+                        player_clicks = [square_select]
+                        
             # listen to keys
             elif e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_q: #undo when q pressed
@@ -137,7 +141,7 @@ def drawGameState(screen, gs):
     drawPieces(screen, gs.board) # draw pieces ontop of the squares.
 
 def drawBoard(screen):
-    colours = [pygame.Color("white"), pygame.Color("lightpink")]
+    colours = [pygame.Color("white"), pygame.Color("aquamarine")]
     #nested for loop
     for r in range(Dimension):
         for c in range(Dimension):
