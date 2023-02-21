@@ -50,6 +50,7 @@ class GameState():
                 self.whiteKinglocation = (move.startrow, move.startcol)
             elif move.piecemove == 'bK':
                 self.blackKinglocation = (move.startrow, move.startcol) 
+                #fixed by changing whiteKinglocation --> blackKinglocation
 
     # all moves including checks
 
