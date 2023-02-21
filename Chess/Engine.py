@@ -1,3 +1,7 @@
+import pygame
+from pygame import mixer
+move_piece = mixer.Sound('move_piece.wav')
+
 class GameState():
     def __init__(self):
         self.board = [
@@ -9,9 +13,13 @@ class GameState():
             ["--","--","--","--","--","--","--","--"],
             ["wp","wp","wp","wp","wp","wp","wp","wp"],
             ["wR","wN","wB","wQ","wK","wB","wN","wR"]]
+
+        self.moveFunctions = {'R':self.RookMoves,'p' : self.PawnMoves,'N' : self.KnightMoves, 'B' : self.BishopMoves, 'Q' : self.QueenMoves, 'K' : self.KingMoves}
         self.whiteToMove = True
         self.moveLog = []
-        self.moveFunctions = {'R':self.RookMoves,'p' : self.PawnMoves,'N' : self.KnightMoves, 'B' : self.BishopMoves, 'Q' : self.QueenMoves, 'K' : self.KingMoves}
+        self.whiteKinglocation = (7 , 4)
+        self.blackKinglocation = (0 , 4)
+
     
     def makeMove(self, move):
         #won't work on pawn promotion, en passant and castling
@@ -21,7 +29,12 @@ class GameState():
             self.board[move.endrow][move.endcol] = move.piecemove
             self.moveLog.append(move) # records the moves for undo if wanted.
             self.whiteToMove = not self.whiteToMove # swap players
-    
+            #king loc. update
+            if move.piecemove == 'wK':
+                self.whiteKinglocation = (move.endrow, move.endcol)
+            elif move.piecemove == 'bK':
+                self.whiteKinglocation = (move.endrow, move.endcol)    
+
     # undo the last move
     def undolastmove(self):
         if len(self.moveLog) != 0:
@@ -31,7 +44,11 @@ class GameState():
             #moves the captured piece back (if any)
             self.board[move.endrow][move.endcol] = move.piececaptured
             self.whiteToMove = not self.whiteToMove # once reversed must switch turns.
-
+            #king loc.
+            if move.piecemove == 'wK':
+                self.whiteKinglocation = (move.startrow, move.startcol)
+            elif move.piecemove == 'bK':
+                self.whiteKinglocation = (move.startrow, move.startcol) 
 
     # all moves including checks
 
@@ -103,6 +120,7 @@ class GameState():
                 endpiece = self.board[endrow][endcol]
                 if endpiece[0] == enemyColour or endpiece == "--":
                     moves.append(Move((r,c),(endrow,endcol), self.board))
+                    move_piece.play()
 
     def QueenMoves(self, r, c, moves):
         self.RookMoves(r,c,moves)
