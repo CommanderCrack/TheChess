@@ -34,7 +34,7 @@ class GameState():
             if move.piecemove == 'wK':
                 self.whiteKinglocation = (move.endrow, move.endcol)
             elif move.piecemove == 'bK':
-                self.whiteKinglocation = (move.endrow, move.endcol)    
+                self.blackKinglocation = (move.endrow, move.endcol)    
 
     # undo the last move
     def undolastmove(self):
@@ -49,7 +49,7 @@ class GameState():
             if move.piecemove == 'wK':
                 self.whiteKinglocation = (move.startrow, move.startcol)
             elif move.piecemove == 'bK':
-                self.whiteKinglocation = (move.startrow, move.startcol) 
+                self.blackKinglocation = (move.startrow, move.startcol) 
 
     # all moves including checks
 
@@ -62,14 +62,14 @@ class GameState():
                 moves.remove(moves[i])
             self.whiteToMove = not self.whiteToMove
             self.undolastmove()
-        if len(moves)== 0:
-            if self.inCheck():
-                self.checkMate = True
-            else:
-                self.stalemate = True
-        else:
-            self.checkMate = False
-            self.stalemate = False
+        #if len(moves)== 0:
+            #if self.inCheck():
+                #self.checkMate = True
+           # else:
+                #self.stalemate = True
+        #else:
+            #self.checkMate = False
+            #self.stalemate = False
         return moves
 
     # all moves without check
