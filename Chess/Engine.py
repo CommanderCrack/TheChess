@@ -19,8 +19,9 @@ class GameState():
         self.moveLog = []
         self.whiteKinglocation = (7 , 4)
         self.blackKinglocation = (0 , 4)
+        self.checkMate = False
+        self.stalemate = False
 
-    
     def makeMove(self, move):
         #won't work on pawn promotion, en passant and castling
         if self.board[move.startrow][move.startcol] != "--":
@@ -53,9 +54,39 @@ class GameState():
     # all moves including checks
 
     def getValidMoves(self):
-        return self.getAllPossible()
+        moves = self.getAllPossible()
+        for i in range(len(moves)-1,-1,-1): # backward
+            self.makeMove(moves[i])
+            self.whiteToMove = not self.whiteToMove
+            if self.inCheck():
+                moves.remove(moves[i])
+            self.whiteToMove = not self.whiteToMove
+            self.undolastmove()
+        if len(moves)== 0:
+            if self.inCheck():
+                self.checkMate = True
+            else:
+                self.stalemate = True
+        else:
+            self.checkMate = False
+            self.stalemate = False
+        return moves
 
     # all moves without check
+    def inCheck(self):
+        if self.whiteToMove:
+            return self.squareAttacked(self.whiteKinglocation[0], self.whiteKinglocation[1])
+        else:
+            return self.squareAttacked(self.blackKinglocation[0],self.blackKinglocation[1])
+
+    def squareAttacked(self , r , c):
+        self.whiteToMove = not self.whiteToMove
+        enemyMove = self.getAllPossible()
+        self.whiteToMove = not self.whiteToMove 
+        for move in enemyMove:
+            if move.endrow == r and move.endcol == c: #sq under attack
+                return True
+        return False
 
     def getAllPossible(self):
         moves = []
