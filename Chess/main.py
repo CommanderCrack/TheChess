@@ -64,13 +64,14 @@ def main ():
                 if len(player_clicks) == 2:
                     move = Engine.Move(player_clicks[0],player_clicks[1], gs.board)
                     print(move.ChessNotation())
-                    if move in validMoves:
-                        gs.makeMove(move) ### fix here
-                        moveMade = True
-                        square_select = () # resets user clicks
-                        player_clicks = []
-                    else:
-                        player_clicks = [square_select]
+                    for i in range(len(validMoves)):
+                        if move == validMoves[i]:
+                            gs.makeMove(validMoves[i]) ### fix here
+                            moveMade = True
+                            square_select = () # resets user clicks
+                            player_clicks = []
+                        if not moveMade:
+                            player_clicks = [square_select]
                         
             # listen to keys
             elif e.type == pygame.KEYDOWN:

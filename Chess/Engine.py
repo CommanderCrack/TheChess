@@ -34,7 +34,11 @@ class GameState():
             if move.piecemove == 'wK':
                 self.whiteKinglocation = (move.endrow, move.endcol)
             elif move.piecemove == 'bK':
-                self.whiteKinglocation = (move.endrow, move.endcol)    
+                self.blackKinglocation = (move.endrow, move.endcol)    
+
+            # pawn promotion
+            if move.isPawnPromoted:
+                self.board[move.endrow][move.endcol] = move.piecemove[0] + 'Q'
 
     # undo the last move
     def undolastmove(self):
@@ -49,7 +53,7 @@ class GameState():
             if move.piecemove == 'wK':
                 self.whiteKinglocation = (move.startrow, move.startcol)
             elif move.piecemove == 'bK':
-                self.whiteKinglocation = (move.startrow, move.startcol) 
+                self.blackKinglocation = (move.startrow, move.startcol) 
 
     # all moves including checks
 
@@ -203,6 +207,11 @@ class Move():
         self.endcol = end_sg[1]
         self.piecemove = board[self.startrow][self.startcol]
         self.piececaptured = board[self.endrow][self.endcol]
+        self.isPawnPromoted = False
+      
+        if (self.piecemove == "wp" and self.endrow == 0) or (self.piecemove == "bp" and self.endrow == 7) :
+            self.isPawnPromoted = True
+
         self.moveID = self.startrow * 1000 + self.startcol * 100 + self.endrow * 10 + self.endcol
         print(self.moveID)
 
