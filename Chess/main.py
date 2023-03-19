@@ -4,7 +4,7 @@ from pygame import mixer
 pygame.init()
 #import engine error:
 import Engine
-import ChessAI
+import AI
 #creating a display:
 screen_width = 512
 screen_height = 512
