@@ -4,7 +4,8 @@ from pygame import mixer
 pygame.init()
 #import engine error:
 import Engine
-import AI
+#import AI
+import random
 #creating a display:
 screen_width = 512
 screen_height = 512
@@ -32,6 +33,9 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x,y))
 
+def randomMove(validMoves):
+    return validMoves[random.randint(0, len(validMoves)-1)]
+
 def main ():
     pygame.init()
     screen = pygame.display.set_mode((screen_height,screen_width ))
@@ -46,7 +50,7 @@ def main ():
     player_clicks = [] # keep track of the clicks
     gameOver = False
 
-    playerOne = True # human vs human. AI vs human then false {white}
+    playerOne = False # human vs human. AI vs human then false {white}
     playerTwo = False # black
     while running:
         isHumanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
@@ -93,7 +97,7 @@ def main ():
                     moveMade = False
 
         if not gameOver and not isHumanTurn:
-            AImove = ChessAI.randomMove(validMoves)
+            AImove = randomMove(validMoves)
             gs.makeMove(AImove)
             moveMade = True
 

@@ -61,7 +61,7 @@ class GameState():
                     self.board[move.endrow][move.endcol+1] = '--' # get rid of old rook
                     
                 else:
-                    self.board[move.endrow][move.endcol+2] = self.board[move.endrow][move.endcol-2]
+                    self.board[move.endrow][move.endcol+1] = self.board[move.endrow][move.endcol-2]
                     self.board[move.endrow][move.endcol-2] = '--'
 
             #update castle rights
@@ -124,8 +124,19 @@ class GameState():
                 elif move.startcol == 7: # right rook
                     self.currentCastlingRights.bks = False
 
-
-
+        #fixes empty square castling
+        if move.piececaptured == 'wR':
+            if move.endrow == 7:
+                if move.endcol == 0:
+                    self.currentCastlingRights.wqs = False
+                elif move.endcol == 7:
+                    self.currentCastlingRights.wks = False
+        elif move.piececaptured == 'bR':
+            if move.endrow == 0:
+                if move.endcol == 0:
+                    self.currentCastlingRights.bqs = False
+                elif move.endcol == 7:
+                    self.currentCastlingRights.bks = False
 
 
 
@@ -296,10 +307,11 @@ class GameState():
                 moves.append(Move((r,c),(r,c+2), self.board, iscastlemove=True))
 
     def getQueensideCastleMoves(self, r, c, moves ):
-        if self.board[r][c-1] == '--' and self.board[r][c-2] == '2' and self.board[r][c-3]:
+        print("QUEEN")
+        if self.board[r][c-1] == '--' and self.board[r][c-2] == '--' and self.board[r][c-3] == '--':
             if not self.squareAttacked(r,c-1) and not self.squareAttacked(r, c-2):
                 moves.append(Move((r,c),(r,c-2), self.board, iscastlemove=True))
-    
+                
 class CastleRights():
     def __init__(self, wks, bks, wqs, bqs):
         self.wks = wks
